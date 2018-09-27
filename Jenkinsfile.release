@@ -20,9 +20,9 @@ spec:
             withMaven(mavenOpts: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn') {
               sh './mvnw release:prepare release:perform'
             }
-          }
-        }
-      }
-    }
+          } // env
+        } // container
+      } // stage
+    } // node
   }
 

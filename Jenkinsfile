@@ -18,6 +18,7 @@ pipeline {
       tty: true
 """
     }
+  }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
