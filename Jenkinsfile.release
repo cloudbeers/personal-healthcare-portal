@@ -13,7 +13,7 @@ spec:
 """
 ) {
     node (label) {
-      git 'https://github.com/cloudbeers/wordsmith-api.git'
+      git 'https://github.com/cloudbeers/personal-healthcare-portal.git'
       stage('Release Java App') {
         container('jdk') {
           withEnv(['GIT_COMMITTER_NAME=Cyrille Le Clerc', 'GIT_COMMITTER_EMAIL=cleclerc@cloudbees.com', 'GIT_AUTHOR_NAME=Cyrille Le Clerc', 'GIT_AUTHOR_EMAIL=cleclerc@cloudbees.com']) {

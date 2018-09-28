@@ -35,5 +35,12 @@ pipeline {
         }
       } // steps
     } // stage
+    stage ('Deploy to Development') {
+      steps {
+        withCfCli(apiEndpoint: 'https://api.run.pivotal.io', credentialsId: 'run.pivotal.io', organization: 'cloudbees', space: 'development', cloudFoundryCliVersion: '6.37') {
+          sh "cf  push personal-healthcare-portal-dev -p target/personal-healthcare-portal-*.jar"
+        }
+      } // steps
+    } // stage
   } // stages
 }
