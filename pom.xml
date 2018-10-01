@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.myinsurance.www</groupId>
             <artifactId>myinsurance-framework</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,6 +100,16 @@
         <url>https://jira.beescloud.com/projects/PHP</url>
     </issueManagement>
     <repositories>
+        <repository>
+            <id>nexus.beescloud.com</id>
+            <url>https://nexus3.beescloud.com/repository/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>nexus3.beescloud.com</id>
             <url>https://nexus3.beescloud.com/repository/maven-snapshots/</url>
