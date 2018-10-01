@@ -24,6 +24,8 @@
 * Do a change in the code: https://github.com/cloudbeers/personal-healthcare-portal/blob/master/src/main/java/com/myinsurance/www/personalhealthcareportal/PersonalHealthcarePortalController.java#L13
    * Save the code change as a Feature Branch and create a Pull Request on this Feature Branch
 * Verify that the branch build is triggered https://cd.wordsmith.beescloud.com/teams-front-team/blue/organizations/front-team/personal-healthcare-portal/activity
+* View CloudBees Core and Jenkins capabilities to automatically collect knowledge on the build: unit tests, code coverage, findbugs, "TODO" and "FIXME" comments in the code, Maven details...
+   * https://cd.wordsmith.beescloud.com/teams-front-team/job/front-team/job/personal-healthcare-portal/job/master/
 * Merge the pull request https://github.com/cloudbeers/personal-healthcare-portal
 * Verify that the master build is triggered https://cd.wordsmith.beescloud.com/teams-front-team/blue/organizations/front-team/personal-healthcare-portal/activity
 * Once the build of "master" is successful, verify that the application version is deployed on DEV 
@@ -41,3 +43,4 @@
    * https://personal-healthcare-portal.cfapps.io/
    * https://personal-healthcare-portal.cfapps.io/actuator/info
 
+* Last: demo a cross pipeline trigger
