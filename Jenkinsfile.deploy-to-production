@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
 
+properties([parameters([string(name: 'ApplicationVersion', defaultValue: '2.0.0', description: 'version number (e.g. 2.0.0)', trim: true)])])
+
 def label = "personal-healthcare-portal-release"
 podTemplate(label: label, yaml: """
 apiVersion: v1
@@ -10,20 +12,19 @@ spec:
 """
 ) {
     node (label) {
-      String version = input message: 'Deploy to production', parameters: [string(defaultValue: '0.0.1', description: 'version number (e.g. 0.0.1)', name: 'version', trim: true)]
       stage('Deploy to Production') {
         container('jnlp') {
-          sh "wget --output-document=personal-healthcare-portal-${version}.jar \"https://nexus3.beescloud.com/service/rest/v1/search/assets/download?" +
+          sh "wget --output-document=personal-healthcare-portal-${ApplicationVersion}.jar \"https://nexus3.beescloud.com/service/rest/v1/search/assets/download?" +
             "repository=maven-releases&" +
             "maven.groupId=com.myinsurance.www&" +
             "maven.artifactId=personal-healthcare-portal&" +
-            "maven.baseVersion=${version}&" +
+            "maven.baseVersion=${ApplicationVersion}&" +
             "maven.extension=jar&" +
             "maven.classifier=\""
 
           withCfCli(apiEndpoint: 'https://api.run.pivotal.io', credentialsId: 'run.pivotal.io', organization: 'cloudbees', space: 'production', cloudFoundryCliVersion: '6.37') {
-            sh "cf push personal-healthcare-portal -p personal-healthcare-portal-${version}.jar"
-            echo "Check application http://personal-healthcare-portal.cfapps.io"
+            sh "cf push personal-healthcare-portal -p personal-healthcare-portal-${ApplicationVersion}.jar"
+            echo "Check application version $ApplicationVersion http://personal-healthcare-portal.cfapps.io"
           }
         } // container
       } // stage
