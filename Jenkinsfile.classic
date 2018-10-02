@@ -15,7 +15,7 @@ spec:
 """
 ) {
     properties([
-      buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
+      buildDiscarder(logRotator(numToKeepStr: '5')),
       pipelineTriggers([snapshotDependencies()])])
     node (label) {
       checkout scm
