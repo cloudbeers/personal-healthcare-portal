@@ -1,2 +1,3 @@
+type: maven-library
 notification:
-  email: "healthcare-portal-builds@hcsc.com"
+  email: "cleclerc@cloudbees.com"
