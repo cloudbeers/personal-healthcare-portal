@@ -19,7 +19,7 @@ spec:
       pipelineTriggers([snapshotDependencies()])])
     node (label) {
       checkout scm
-      stage('Build and Upload Java App') {
+      stage('Build') {
         container ('jdk') {
           withMaven(mavenOpts: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn') {
             def goals = (env.BRANCH_NAME == 'master' || env.BRANCH_NAME =~ /v\d+\.x/ ) ? 'clean deploy' : 'clean verify'
