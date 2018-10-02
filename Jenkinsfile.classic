@@ -19,7 +19,7 @@ spec:
       pipelineTriggers([snapshotDependencies()])])
     node (label) {
       checkout scm
-      stage('Build and Upload Java App') {
+      stage('Build') {
         container ('jdk') {
           withMaven(mavenOpts: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn') {
             def goals = (env.BRANCH_NAME == 'master' || env.BRANCH_NAME =~ /v\d+\.x/ ) ? 'clean deploy' : 'clean verify'
@@ -33,6 +33,7 @@ spec:
           withCfCli(apiEndpoint: 'https://api.run.pivotal.io', credentialsId: 'run.pivotal.io', organization: 'cloudbees', space: 'development', cloudFoundryCliVersion: '6.37') {
             applicationVersion = readFile("target/VERSION")
             sh "cf push personal-healthcare-portal-dev -p target/personal-healthcare-portal-${applicationVersion}.jar"
+            echo "Check application http://personal-healthcare-portal-dev.cfapps.io"
           }
         } // stage
       }
