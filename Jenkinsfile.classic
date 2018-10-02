@@ -60,10 +60,7 @@ pipeline {
     } // stage
     stage ('Deploy to Development') {
       when {
-        anyOf {
-          branch 'master';
-          branch 'v1.x'
-        }
+        branch 'master';
       }
       steps {
         withCfCli(apiEndpoint: 'https://api.run.pivotal.io', credentialsId: 'run.pivotal.io', organization: 'cloudbees', space: 'development', cloudFoundryCliVersion: '6.37') {
