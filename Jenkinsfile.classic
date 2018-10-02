@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 def label = "healthcare-${UUID.randomUUID().toString()}"
 podTemplate(label: label, yaml: """
 apiVersion: v1
