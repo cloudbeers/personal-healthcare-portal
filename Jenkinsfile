@@ -19,6 +19,14 @@ spec:
       pipelineTriggers([snapshotDependencies()])])
     node (label) {
       checkout scm
+      stage('Compliance Checks') {
+        if (    ! (env.BRANCH_NAME == 'master') &&
+                ! (env.BRANCH_NAME =~ /v\d+\.x/) &&
+                ! (env.BRANCH_NAME.startsWith("PHP-")) ) {
+
+          echo "wrong branch name: ${env.BRANCH_NAME}"
+        }
+      }
       stage('Build') {
         container ('jdk') {
           withMaven(mavenOpts: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn') {
