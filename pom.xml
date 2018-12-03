@@ -4,7 +4,7 @@
 
     <groupId>com.myinsurance.www</groupId>
     <artifactId>personal-healthcare-portal</artifactId>
-    <version>2.0.11</version>
+    <version>2.0.12-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>personal-healthcare-portal</name>
@@ -121,7 +121,7 @@
     </build>
     <scm>
         <connection>scm:git:https://github.com/cloudbeers/personal-healthcare-portal.git</connection>
-      <tag>personal-healthcare-portal-2.0.11</tag>
+      <tag>HEAD</tag>
   </scm>
     <issueManagement>
         <system>Jira</system>
