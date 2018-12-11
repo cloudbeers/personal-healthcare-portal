@@ -20,22 +20,23 @@ spec:
         container('jdk') {
           withEnv(['GIT_COMMITTER_NAME=Cyrille Le Clerc', 'GIT_COMMITTER_EMAIL=cleclerc@cloudbees.com', 'GIT_AUTHOR_NAME=Cyrille Le Clerc', 'GIT_AUTHOR_EMAIL=cleclerc@cloudbees.com']) {
             withMaven(mavenOpts: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn') {
-              sh './mvnw release:prepare release:perform'
+              sh './mvnw release:prepare'
+              def version = sh (script: 'cat release.properties | grep project.rel | cut -f2 -d=', returnStdout: true).trim()
+              echo 'Found version from maven release: ' + version
+              def jiraVersionContent = [ name: version, description: 'Automatically created by release pipeline', project: jiraProject ]
+              def jiraVersion = jiraNewVersion version: jiraVersionContent
+              def commitIssues = sh (script: 'git log $(git describe --tags --abbrev=0)..HEAD --oneline | grep -o ' + ${jiraProject} + '-[0-9][0-9]* | sort -u', returnStdout: true).split()
+              echo 'Found issues from commit messages: ' + commitIssues.join(',')
+              def searchResults = jiraJqlSearch jql: "project = " + ${jiraProject} + " AND issuekey in (" + commitIssues.join(',') + ")"
+              def issues = searchResults.data.issues
+              for (i = 0; i <issues.size(); i++) {
+                def issueUpdate = [fields: [fixVersions: [jiraVersion.data]]]
+                response = jiraEditIssue idOrKey: issues[i].key, issue: issueUpdate
+              } // for
+              sh './mvnw release:perform'
             }
           } // env
         } // container
-        def version = sh (script: 'cat release.properties | grep project.rel | cut -f2 -d=', returnStdout: true).trim()
-        echo 'Found version from maven release: ' + version
-        def jiraVersionContent = [ name: version, description: 'Automatically created by release pipeline', project: jiraProject ]
-        def jiraVersion = jiraNewVersion version: jiraVersionContent
-        def commitIssues = sh (script: 'git log $(git describe --tags --abbrev=0)..HEAD --oneline | grep -o ' + ${jiraProject} + '-[0-9][0-9]* | sort -u', returnStdout: true).split()
-        echo 'Found issues from commit messages: ' + commitIssues.join(',')
-        def searchResults = jiraJqlSearch jql: "project = " + ${jiraProject} + " AND issuekey in (" + commitIssues.join(',') + ")"
-        def issues = searchResults.data.issues
-        for (i = 0; i <issues.size(); i++) {
-          def issueUpdate = [fields: [fixVersions: [jiraVersion.data]]]
-          response = jiraEditIssue idOrKey: issues[i].key, issue: issueUpdate
-        } // for
       } // stage
     } // node
   }
