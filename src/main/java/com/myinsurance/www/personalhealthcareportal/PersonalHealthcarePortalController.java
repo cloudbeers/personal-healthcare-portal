@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonalHealthcarePortalController {
     @RequestMapping("/")
     public String index() {
-        return "Greetings from Personal Healthcare Portal PHP-22 and PHP-23";
+        return "Greetings from Personal Healthcare Portal";
     }
 }
