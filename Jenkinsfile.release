@@ -28,12 +28,14 @@ spec:
               def jiraVersion = jiraNewVersion version: jiraVersionContent
               def commitIssues = sh (script: 'git log $(git describe --tags --abbrev=0)..HEAD --oneline | grep -o ' + jiraProject + '-[0-9][0-9]* | sort -u', returnStdout: true).split()
               echo 'Found issues from commit messages: ' + commitIssues.join(',')
-              def searchResults = jiraJqlSearch jql: "project = " + jiraProject + " AND issuekey in (" + commitIssues.join(',') + ")"
-              def issues = searchResults.data.issues
-              for (i = 0; i <issues.size(); i++) {
-                def issueUpdate = [fields: [fixVersions: [jiraVersion.data]]]
-                response = jiraEditIssue idOrKey: issues[i].key, issue: issueUpdate
-              } // for
+              if (commitIssues.length > 0) {
+                def searchResults = jiraJqlSearch jql: "project = " + jiraProject + " AND issuekey in (" + commitIssues.join(',') + ")"
+                def issues = searchResults.data.issues
+                for (i = 0; i <issues.size(); i++) {
+                  def issueUpdate = [fields: [fixVersions: [jiraVersion.data]]]
+                  response = jiraEditIssue idOrKey: issues[i].key, issue: issueUpdate
+                } // for
+              } // if
               sh './mvnw release:perform'
             }
           } // env
