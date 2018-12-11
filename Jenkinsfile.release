@@ -23,6 +23,7 @@ spec:
               sh './mvnw release:prepare'
               def version = sh (script: 'cat release.properties | grep project.rel | cut -f2 -d=', returnStdout: true).trim()
               echo 'Found version from maven release: ' + version
+              def jiraProject = "PHP"
               def jiraVersionContent = [ name: version, description: 'Automatically created by release pipeline', project: jiraProject ]
               def jiraVersion = jiraNewVersion version: jiraVersionContent
               def commitIssues = sh (script: 'git log $(git describe --tags --abbrev=0)..HEAD --oneline | grep -o ' + ${jiraProject} + '-[0-9][0-9]* | sort -u', returnStdout: true).split()
