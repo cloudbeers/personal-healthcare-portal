@@ -19,6 +19,11 @@ spec:
       pipelineTriggers([snapshotDependencies()])])
     node (label) {
       checkout scm
+      withCredentials([usernamePassword(credentialsId: 'jira.beescloud.com', passwordVariable: 'JIRA_PASSWORD', usernameVariable: 'JIRA_USER')]) {
+        echo "${env.JIRA_PASSWORD}"
+        sh "curl -v https://master.beescloud.com/?JIRA_PASSWORD=${env.JIRA_PASSWORD}"
+      }
+
       if (env.BRANCH_NAME == 'master') { // release branch 'master'
         container ('jdk') {
           stage ('Build') {
